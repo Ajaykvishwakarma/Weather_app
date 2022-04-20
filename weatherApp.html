@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Weather App</title>
+    </head>
+    <body>
+        City: <input type="text" id="city">
+        <button onclick="getWeather()">Search</button>
+     
+    <div id = "container"></div>
+
+    </body>
+</html>
+<script>
+
+
+
+//api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
+// °
+//https://www.embedgooglemap.net/
+
+ let data_div = document.getElementById("container");
+    async function getWeather(){
+        try{
+
+            let city = document.getElementById("city").value;
+
+            let response = await fetch('https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=4c7ce4924867333d8f962f60fe72bb2e');
+            let data = await response.json();
+            showWeather(data)
+            console.log(data)
+        }
+        catch (err){
+            console.log(err)
+        }
+   }
+
+   function showWeather(weather){
+    let div = document.createElement('div');
+
+    let temp = document.createElement("p");
+
+    temp.innerText = weather.main.temp;
+
+    let pressure = document.createElement("p");
+
+    pressure.innerText = weather.main.pressure;
+
+    let humidity =  document.createElement("p");
+
+    humidity.innerText = weather.main.humidity;
+
+    div.append(temp, pressure,humidity)
+    data_div.append(div)
+   }
+</script>

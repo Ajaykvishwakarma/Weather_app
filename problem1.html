@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Weather Forcasting</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+        #nav{
+         text-align: center;
+         height:150px;
+         width:100%;
+         margin: auto;
+         padding-top:2px;
+         background: rgb(54,52,177);
+         background: radial-gradient(circle, rgba(54,52,177,1) 0%, rgba(240,247,255,1) 67%);
+         color:white;
+         font-family: "Work Sans", "Helvetica Neue", Helvetica, Helvetica, Arial, sans-serif;
+         
+      }
+      #main{
+          min-height:600px;
+          width:100%;
+          margin:auto;
+          display:grid;
+          grid-template-rows: 600px;
+          grid-template-columns: repeat(2, 1fr);
+          grid-gap:20px;
+          background: rgb(176, 203, 243);
+        
+      }
+      #main > div:nth-child(2){
+          margin:20px 20px;
+          border-radius: 10px;
+          box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+          background-color: rgb(76, 74, 192);
+          padding:10px;
+          
+      }
+      #main > div:nth-child(1){
+          margin:20px 20px;
+          border-radius: 10px;
+          height:400px;
+          box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+          background-color: rgb(76, 74, 192);
+          padding:10px;
+          display:flex;
+          
+      }
+      .weather{
+          color: rgb(255, 0, 255);
+          font-size: 30px;
+          margin-bottom: 20px;
+          
+          /* font-weight: bolder; */
+          font-family: Pacifico;
+          font-family: cursive;
+          
+      }
+        #search {
+            width:90%;
+            height:40px;
+            padding:0px;
+            border:none;
+            margin:auto;
+            font-size: 20px; 
+            } 
+            .elementsContainer{
+            border:1px solid #dcdcdc;
+            width:50%;
+            background-color: white;
+            margin-top: 20px;
+            margin: auto;
+            border-radius: 25px;
+            }
+            #searchicon{
+            color:black;
+            background-color: white;
+            width:80%;
+            height: 100%;
+            border:2px solid white;
+
+            }
+            th:nth-child(2){
+                width: 20%;
+            }
+            #textCon{
+                margin: auto;
+            }
+            iframe{
+                width:100%;
+                height:540px;
+                border-radius: 10px;
+                
+
+            }
+            #leftD1{
+                margin-top:64px;
+                margin-left: 100px;
+            }
+            #leftD1 > img{
+                height:50px;
+                width:50px;
+
+
+            }
+            #leftD > img{
+                height:50px;
+                width:50px;
+            }
+            #wind{
+                height:40px;
+                width:50px;
+                margin-left: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id = "nav">
+            <div class = "weather"><b style = "font-size: 40px;">W</b>eather</div> 
+            <div>
+            <table class = "elementsContainer">
+                <tr>
+                    <th>
+                        <input type ="text" placeholder = "  Enter City..." id = "search">
+                    </th>
+                    <th>
+                        <button id = "searchicon" onclick="getWeather()"><i class="fa fa-search fa-2x"></i></button>
+                    </th>
+                </tr>
+            </table>
+        </div>
+        </div>
+        <div id = "main">
+            <div id = "container"></div>
+            <div id = "container1" ></div>
+        </div>
+
+        
+
+    </body>
+</html>
+
+<script>
+
+    var data_div = document.getElementById("container"); 
+
+    var map_div = document.getElementById("container1");
+
+
+    async function getWeather(){
+
+        try{
+
+        
+        let city = document.getElementById("search").value;
+
+        let response = await fetch('https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=4c7ce4924867333d8f962f60fe72bb2e&units=metric')
+        
+        let data = await response.json();
+        showWeather(data)
+        showMap(city)
+         console.log(data)
+        }
+        catch (err){
+            console.log(err)
+        }
+    }
+
+
+   function showWeather(data){
+       data_div.innerHTML = null;
+       let leftD = document.createElement("div") 
+
+       let leftD1 = document.createElement("div")
+       leftD1.setAttribute("id", "leftD1")
+
+
+       let name = document.createElement("h1")
+       name.innerText = "Name : "+ data.name;
+
+       let country = document.createElement("p")
+       country.innerText = "Country : "+data.sys.country;
+
+       let image = document.createElement("img")
+       image.src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png";
+
+
+       let temp = document.createElement("h3")
+       temp.innerText = "Temp : "+ data.main.temp+"°C";
+
+       let max_t = document.createElement("p")
+       max_t.innerText = "Max-Temp : "+data.main.temp_max+"°C";
+
+       let min_t = document.createElement("p")
+       min_t.innerText = "Max-Temp : "+data.main.temp_min+"°C";
+
+       let wind = document.createElement("h5")
+       wind.innerText = "Wind speed : "+data.wind.speed;
+
+       let image3 = document.createElement("img")
+       image3.setAttribute("id","wind")
+       image3.src="https://cdn-icons-png.flaticon.com/512/54/54298.png";
+
+       let sunrise = document.createElement("h3")
+       sunrise.innerText = "Sunrise : "+data.sys.sunrise;
+
+       let image1 = document.createElement("img")
+       image1.src="https://cdn-icons-png.flaticon.com/512/2924/2924900.png";
+
+
+       let sunset = document.createElement("h3")
+       sunset.innerText = "Sunset : "+data.sys.sunset;
+
+       let image2 = document.createElement("img")
+       image2.src="https://cdn-icons.flaticon.com/png/512/1975/premium/1975486.png?token=exp=1641111826~hmac=41678bbf7ba95569b620753633700e7f";
+
+       
+       let clouds = document.createElement("h5")
+       clouds.innerText = "Cloud : "+data.clouds.all;
+
+       let image4 = document.createElement("img")
+       image4.src="https://cdn-icons-png.flaticon.com/128/414/414927.png";
+
+       
+       leftD.append(name,country,temp, image,max_t, min_t,wind,image3)
+       leftD1.append(image1,sunrise,image2,sunset,clouds,image4)
+       data_div.append(leftD,leftD1);
+       
+ 
+    }
+    function showMap(city){
+ 
+        map_div.innerHTML = null;
+
+        let rightD = document.createElement("div");
+        let iframe = document.createElement("iframe");
+
+        iframe.src="https://maps.google.com/maps?q="+city+"&t=&z=13&ie=UTF8&iwloc=&output=embed";
+        rightD.append(iframe)
+        map_div.append(rightD)
+
+    }
+</script>
